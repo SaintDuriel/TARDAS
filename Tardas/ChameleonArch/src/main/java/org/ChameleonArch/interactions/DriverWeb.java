@@ -4,10 +4,10 @@ import java.time.Duration;
 import java.util.List;
 import java.util.Set;
 
-import org.ChameleonArch.interactions.actions.ClickException;
 import org.ChameleonArch.interactions.actions.FindMethods;
 import org.ChameleonArch.interactions.actions.GetMethods;
 import org.ChameleonArch.interactions.actions.InputMethods;
+import org.ChameleonArch.interactions.exceptions.ClickException;
 import org.CloisterBell.Clapper;
 import org.CloisterBell.enumTypes.LogLevel;
 import org.openqa.selenium.By;

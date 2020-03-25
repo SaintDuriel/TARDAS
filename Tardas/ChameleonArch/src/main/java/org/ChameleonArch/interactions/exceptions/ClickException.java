@@ -1,4 +1,4 @@
-package org.ChameleonArch.interactions.actions;
+package org.ChameleonArch.interactions.exceptions;
 
 import org.CloisterBell.enumTypes.LogLevel;
 

@@ -4,7 +4,8 @@ import java.time.Duration;
 
 import org.ChameleonArch.enums.ClickSuccessType;
 import org.ChameleonArch.interactions.DriverModule;
-import org.ChameleonArch.interactions.actions.ClickException.ClickFailureType;
+import org.ChameleonArch.interactions.exceptions.ClickException;
+import org.ChameleonArch.interactions.exceptions.ClickException.ClickFailureType;
 import org.CloisterBell.Clapper;
 import org.CloisterBell.enumTypes.LogLevel;
 import org.Library.RandomMath;
@@ -68,7 +69,7 @@ public class InputMethods {
         }
     }
     
-    public synchronized static void click(DriverModule<?> driver, By by, Duration timeout) { 
+    public synchronized static ClickSuccessType click(DriverModule<?> driver, By by, Duration timeout) { 
         WebElement ele = FindMethods.findElementWithCondition(new WebDriverWait(driver.getDriver(), timeout),ExpectedConditions.elementToBeClickable(by)); 
         Rectangle loc = new Rectangle(0, 0, 0, 0);
         ClickSuccessType successStrategy =  ClickSuccessType.WEBELEMENT;
@@ -81,6 +82,7 @@ public class InputMethods {
             Clapper.log(LogLevel.DEBUG, "Unknown Error Occurred during click\n"+e.getLocalizedMessage());
         }
         Clapper.log(LogLevel.INFO, "\nClicked element at: ("+loc.getX()+","+loc.getY()+") \nWith locator " + by + " \nWith Strategy: " + successStrategy);
+        return successStrategy; 
     }
 
     public synchronized static ClickSuccessType click(DriverModule<?> driver, WebElement ele) throws ClickException { 

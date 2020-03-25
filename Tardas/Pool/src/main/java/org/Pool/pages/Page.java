@@ -9,7 +9,7 @@ public class Page {
     protected DriverModule<?> driver; 
     protected Spin spin; 
     protected static Skimmer pf; 
-    
+   
     public Page(DriverModule<?> driver, Spin spin) { 
         this.driver = driver;
         this.spin = spin; 
@@ -21,6 +21,7 @@ public class Page {
         return pf.initLocators(pageClass);
     }
     
+    @SuppressWarnings("unchecked")
     public static <TPage extends Page> TPage getPage(DriverModule<?> driver, Spin spin, TPage page) {
         return (TPage) new Skimmer(driver,spin).initLocators(page.getClass());
     }

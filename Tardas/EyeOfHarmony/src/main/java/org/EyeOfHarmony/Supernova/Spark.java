@@ -4,6 +4,7 @@ import org.ChameleonArch.DriverManager;
 import org.ChameleonArch.DriverManagerFactory;
 import org.ChameleonArch.interactions.DriverModule;
 import org.EyeOfHarmony.Seed.Spin;
+import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeSuite;
@@ -63,21 +64,34 @@ public class Spark {
                 cloudEnvironment, browserName, browserVersion, deviceName, hostPlatform, androidPackage, deviceId, deviceAppBundleId, deviceMainActivty, logLevel);
     }
 
-     
-     
+
+
     @BeforeClass
-    public void parseClassLevelParameters() {
+    public void parseClassLevelParameters(@Optional String isTestLocal, @Optional String testConfigFile, @Optional String browserConfigFile, @Optional String deviceConfigFile, 
+            @Optional String environmentConfigFile, @Optional String testType, @Optional String testEnvironment
+            , @Optional String cloudEnvironment, @Optional String browserName, @Optional String browserVersion, @Optional String deviceName
+            , @Optional String hostPlatform, @Optional String androidPackage, @Optional String deviceId, @Optional String deviceAppBundleId, @Optional String deviceMainActivty, @Optional String logLevel) {
+
+        Boolean localTest = Boolean.valueOf(isTestLocal != null ? isTestLocal : "true");
+        spin = new Spin(localTest, testConfigFile, browserConfigFile, deviceConfigFile, environmentConfigFile, testType, testEnvironment,
+                cloudEnvironment, browserName, browserVersion, deviceName, hostPlatform, androidPackage, deviceId, deviceAppBundleId, deviceMainActivty, logLevel);
+
         dmf = DriverManagerFactory.getManager(spin.browserName());
         driver = dmf.getDriver();
     }
 
     @BeforeTest
     public void beforeTestInitialization() {
-        
+
     }
 
     @AfterSuite
     public void teardownAllInstances() {
         dmf.quitDriver();
+    }
+    
+    @AfterClass
+    public void tearDownInstance() { 
+        dmf.quitDriver(); 
     }
 }

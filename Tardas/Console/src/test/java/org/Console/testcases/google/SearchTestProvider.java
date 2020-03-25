@@ -4,10 +4,10 @@ import org.EyeOfHarmony.Supernova.Spark;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-public class SearchTests extends Spark {
+public class SearchTestProvider extends Spark {
 
 
-    @Test(dataProvider="searches")
+    @Test(dataProvider="searches", threadPoolSize=4)
     public void tests(Search searchTest) { 
         searchTest.search();
     }

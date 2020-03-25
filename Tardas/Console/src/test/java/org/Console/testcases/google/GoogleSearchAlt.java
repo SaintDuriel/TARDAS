@@ -2,16 +2,13 @@ package org.Console.testcases.google;
 
 import java.util.List;
 
-import org.EyeOfHarmony.Supernova.Spark;
 import org.Pool.pages.Page;
-import org.Pool.pages.google.Home;
+import org.Pool.pages.google.GoogleSearchHome;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Optional;
-import org.testng.annotations.Parameters;
-import org.testng.annotations.Test;
-public class GoogleSearchAlt extends Spark {
+public class GoogleSearchAlt extends Search {
 
     Page page; 
     String query; 
@@ -22,8 +19,6 @@ public class GoogleSearchAlt extends Spark {
         query = "Automation is awesome!";
     }
     
-    @Parameters("query")
-    @Test
     public void searchGoogle(@Optional String query) { 
         if(query != null) {
             this.query = query;
@@ -39,18 +34,15 @@ public class GoogleSearchAlt extends Spark {
     
     
     protected void focusSearchField() {
-        page.initPage(Home.class).loadPage();
+        page.initPage(GoogleSearchHome.class).loadPage();
     }
     
     protected void enterSearchQuery() {
-        page.initPage(Home.class).enterSearchQuery(query)
-        .clickSearch();
-        
+        page.initPage(GoogleSearchHome.class).enterSearchQuery(query);
     }
     
     protected  void checkSearchResults() {
-        List<WebElement> eles = page.initPage(Home.class).getResultList();
+        List<WebElement> eles = page.initPage(GoogleSearchHome.class).clickSearch().getResultList();
         Assert.assertTrue(eles.size() > 0 , "Did not find any results");
-       
     }
 }

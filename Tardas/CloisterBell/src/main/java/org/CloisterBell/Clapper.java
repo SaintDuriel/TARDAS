@@ -19,9 +19,17 @@ public class Clapper {
     }
 
     private static void printMessage(LogLevel logLevel, String message) { 
-       if( logLevel.level() <= localLogLevel.level() ) { 
-           System.out.println(logLevel.toString() + " : " + message);
-       }
+        String tId = " ("+Thread.currentThread().getId()+ ") : ";
+        String op = "[" + logLevel.toString() + "]" + tId + message; 
+        
+        if( logLevel.level() <= localLogLevel.level() ) { 
+            if(logLevel.level() < LogLevel.WARN.level()) { 
+                System.out.println(op);
+            } else { 
+                System.err.println(op);
+            }
+
+        }
     }
-  
+
 }

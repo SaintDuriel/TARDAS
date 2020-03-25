@@ -1,24 +1,21 @@
 package org.Pool.pages.google;
 
-import java.time.Duration;
-import java.util.List;
-
 import org.ChameleonArch.interactions.DriverModule;
 import org.EyeOfHarmony.Seed.Spin;
 import org.Pool.annotations.IOSWeb;
 import org.Pool.annotations.WebBy;
 import org.Pool.pages.BasePage;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
+import org.testng.Assert;
 
-public class Home extends BasePage {
+public class GoogleSearchHome extends BasePage {
 
-    public Home(DriverModule<?>  driver, Spin spin) {
+    public GoogleSearchHome(DriverModule<?>  driver, Spin spin) {
         super(driver, spin);
     }
     
 
-    public Home loadPage() { 
+    public GoogleSearchHome loadPage() { 
         System.out.println("Testing Environment: " + spin.environment().getDomain());
         driver.get(spin.environment().getDomain());
         return this;
@@ -27,30 +24,18 @@ public class Home extends BasePage {
     @WebBy(css="input[name='q']")
     @IOSWeb(css="input[name='q'] mobile skimmer")
     public By searchField; 
-    public Home enterSearchQuery(String query) { 
-        if(sendKeys(searchField,query)) {
-            
-        }
+    public GoogleSearchHome enterSearchQuery(String query) { 
+        Assert.assertTrue(sendKeys(searchField, query), "Failed to enter search query");
         return this;
     }
     
     @WebBy(css="input[name='btnK']")
     @IOSWeb(css="input[name='btnK']")
     public By searchButton; 
-    public Home clickSearch() { 
-        driver.click(searchButton);
-        return this;
+    public GoogleSearchResults clickSearch() { 
+        click(searchButton);
+        return pf.initLocators(GoogleSearchResults.class);
     }
-    
-    @WebBy(className="rc")
-    @IOSWeb(className="rc")
-    public By lstResults;
-    public List<WebElement> getResultList() { 
-        return driver.findElements(lstResults, Duration.ofSeconds(25));
-    }
-
-    
-    
     
     
 }

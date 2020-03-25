@@ -19,11 +19,12 @@ public abstract class DriverManager {
     protected abstract void createDriver();
 
     public void quitDriver() {
-        if (null != driver.get()) {
-            driver.get().quit();
-            driver = null;
+        if(null != driver) { 
+            if (null != driver.get()) {
+                driver.get().quit();
+                driver = null;
+            }
         }
-
     }
 
     public DriverModule<?> getDriver() {
