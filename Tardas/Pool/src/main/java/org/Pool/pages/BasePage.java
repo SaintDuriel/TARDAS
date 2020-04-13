@@ -5,10 +5,10 @@ import java.util.List;
 
 import org.ChameleonArch.enums.ClickSuccessType;
 import org.ChameleonArch.interactions.DriverModule;
-import org.ChameleonArch.interactions.actions.FindMethods;
-import org.ChameleonArch.interactions.actions.GetMethods;
-import org.ChameleonArch.interactions.actions.InputMethods;
-import org.ChameleonArch.interactions.actions.IsMethods;
+import org.ChameleonArch.interactions.actions.Finder;
+import org.ChameleonArch.interactions.actions.Getter;
+import org.ChameleonArch.interactions.actions.Sender;
+import org.ChameleonArch.interactions.actions.ElementState;
 import org.EyeOfHarmony.Seed.Spin;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -55,7 +55,7 @@ public abstract class BasePage extends Page {
      * @return
      */
     protected final WebElement findElement(By by, Duration duration) { 
-        return FindMethods.findElement(driver, by, duration); 
+        return Finder.findElement(driver, by, duration); 
     }
     
     /** Method to return the WebElement within the {@link #implicitWait} duration
@@ -63,7 +63,7 @@ public abstract class BasePage extends Page {
      * @return
      */
     protected final WebElement findElement(By by) { 
-        return FindMethods.findElement(driver, by, Duration.ofSeconds(implicitWait)); 
+        return Finder.findElement(driver, by, Duration.ofSeconds(implicitWait)); 
     }
     
     /**
@@ -72,7 +72,7 @@ public abstract class BasePage extends Page {
      * @return
      */
     protected final List<WebElement> findElements(By by) { 
-        return FindMethods.findElements(driver, by, Duration.ofSeconds(implicitWait));
+        return Finder.findElements(driver, by, Duration.ofSeconds(implicitWait));
     }
     
     /**
@@ -82,7 +82,7 @@ public abstract class BasePage extends Page {
      * @return
      */
     protected final List<WebElement> findElements(By by, Duration duration) { 
-        return FindMethods.findElements(driver, by, duration);
+        return Finder.findElements(driver, by, duration);
     }
     
     /**
@@ -92,8 +92,8 @@ public abstract class BasePage extends Page {
      * @return Boolean which returns the current "value" attribute of the element, and compares to the input keysToSend variable. 
      */
     protected final Boolean sendKeys(By by, String keysToSend) { 
-        InputMethods.sendKeys(driver, Duration.ofSeconds(implicitWait), by, keysToSend);
-        return keysToSend.equals(GetMethods.getAttribute(driver, by , Duration.ofSeconds(implicitWait), "value"));
+        Sender.sendKeys(driver, Duration.ofSeconds(implicitWait), by, keysToSend);
+        return keysToSend.equals(Getter.getAttribute(driver, by , Duration.ofSeconds(implicitWait), "value"));
     }
     
     /**
@@ -104,62 +104,62 @@ public abstract class BasePage extends Page {
      * @return
      */
     protected final Boolean sendKeys(By by, Duration duration, String keysToSend) { 
-        InputMethods.sendKeys(driver, duration, by, keysToSend);
-        return keysToSend.equals(GetMethods.getAttribute(driver, by , Duration.ofSeconds(implicitWait), "value"));
+        Sender.sendKeys(driver, duration, by, keysToSend);
+        return keysToSend.equals(Getter.getAttribute(driver, by , Duration.ofSeconds(implicitWait), "value"));
     }
     
     protected final ClickSuccessType click(By by, Duration duration) { 
-        return InputMethods.click(driver, by, duration);
+        return Sender.click(driver, by, duration);
     }
     
     protected final ClickSuccessType click(By by) { 
-        return InputMethods.click(driver, by, Duration.ofSeconds(implicitWait)); 
+        return Sender.click(driver, by, Duration.ofSeconds(implicitWait)); 
     }
     
     protected final Boolean isDisplayed(By by) { 
-        return IsMethods.isDisplayed(driver, Duration.ofSeconds(implicitWait), by);
+        return ElementState.isDisplayed(driver, Duration.ofSeconds(implicitWait), by);
     }
     
     protected final Boolean isDisplayed(By by, Duration duration) { 
-        return IsMethods.isDisplayed(driver, duration, by);
+        return ElementState.isDisplayed(driver, duration, by);
     }
     
     protected final Boolean isEnabled(By by) { 
-        return IsMethods.isEnabled(driver, Duration.ofSeconds(implicitWait), by);
+        return ElementState.isEnabled(driver, Duration.ofSeconds(implicitWait), by);
     }
     
     protected final Boolean isEnabled(By by, Duration duration) { 
-        return IsMethods.isEnabled(driver, duration, by);
+        return ElementState.isEnabled(driver, duration, by);
     }
     
     protected final Boolean isSelected(By by) { 
-        return IsMethods.isSelected(driver, Duration.ofSeconds(implicitWait), by);
+        return ElementState.isSelected(driver, Duration.ofSeconds(implicitWait), by);
     }
     
     protected final Boolean isSelected(By by, Duration duration) { 
-        return IsMethods.isSelected(driver, duration, by);
+        return ElementState.isSelected(driver, duration, by);
     }
     
     protected final String getText(By by) { 
-        return GetMethods.getText(driver, by,Duration.ofSeconds(implicitWait)); 
+        return Getter.getText(driver, by,Duration.ofSeconds(implicitWait)); 
     }
     protected final String getText(By by, Duration duration) { 
-        return GetMethods.getText(driver, by,duration); 
+        return Getter.getText(driver, by,duration); 
     }
     
     protected final String getAttribute(By by, String attribute) { 
-        return GetMethods.getAttribute(driver, by, Duration.ofSeconds(implicitWait), attribute); 
+        return Getter.getAttribute(driver, by, Duration.ofSeconds(implicitWait), attribute); 
     }
     
     protected final String getAttribute(By by, String attribute, Duration duration) { 
-        return GetMethods.getAttribute(driver, by, duration, attribute); 
+        return Getter.getAttribute(driver, by, duration, attribute); 
     }
     
     protected final String getCss(By by, String cssName) { 
-        return GetMethods.getCSSValue(driver, by, Duration.ofSeconds(implicitWait), cssName); 
+        return Getter.getCSSValue(driver, by, Duration.ofSeconds(implicitWait), cssName); 
     }
     
     protected final String getCss(By by, String cssName, Duration duration) { 
-        return GetMethods.getCSSValue(driver, by, duration, cssName); 
+        return Getter.getCSSValue(driver, by, duration, cssName); 
     }
 }

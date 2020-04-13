@@ -16,46 +16,45 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-public class FindMethods<X extends WebElement> {
+public class Finder<X extends WebElement> {
 
     private synchronized static void throwException(Object ele, String message, FindFailureType failType) throws FindException { 
         if (ele == null) { 
             if(failType == null) { 
-                throw new FindException(message, FindFailureType.UNKNOWN, LogLevel.ERROR);
+                throwException(ele,message, FindFailureType.UNKNOWN);
             }
             switch (failType) {
             case ByIsNull:
                 throw new FindException(message, failType, LogLevel.CRITICAL);
             case FluentWaitCondition:
                 throw new FindException(message, failType, LogLevel.ERROR);
-            case UNKNOWN:
-                throw new FindException(message, failType, LogLevel.ERROR);
             case WebDriver:
                 throw new FindException(message, failType, LogLevel.WARN);
+            case UNKNOWN:
             default:
-                break; 
-            
+                throw new FindException(message, failType, LogLevel.ERROR);
             }
         }
     }
     
     private synchronized static void throwException(List<?> ele, String message, FindFailureType failType) throws FindException { 
         
-        if (ele.isEmpty()) { 
+        if ((null == ele) || ele.isEmpty()) { 
             if(failType == null) { 
-                throw new FindException(message, FindFailureType.UNKNOWN, LogLevel.ERROR);
+                throwException(ele, message, FindFailureType.UNKNOWN);
             }
             switch (failType) {
             case ByIsNull:
                 throw new FindException(message, failType, LogLevel.CRITICAL);
             case FluentWaitCondition:
                 throw new FindException(message, failType, LogLevel.ERROR);
-            case UNKNOWN:
-                throw new FindException(message, failType, LogLevel.ERROR);
+            
+             
             case WebDriver:
                 throw new FindException(message, failType, LogLevel.WARN);
+            case UNKNOWN:
             default:
-                break; 
+                throw new FindException(message, failType, LogLevel.ERROR);
             }
         }
     }

@@ -8,12 +8,12 @@ import org.CloisterBell.enumTypes.LogLevel;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
-public class GetMethods {
+public class Getter {
 
     private static long implicitWait = 30; 
     public static String getText(DriverModule<?> driver, By by, Duration timeout) { 
         String retVal = null; 
-        WebElement ele = FindMethods.findElement(driver,by,timeout); 
+        WebElement ele = Finder.findElement(driver,by,timeout); 
         try { 
             retVal = getText(ele); 
             Clapper.log(LogLevel.INFO, "Retrieved Element Text: "+ retVal);
@@ -37,7 +37,7 @@ public class GetMethods {
     
     public static synchronized String getCSSValue(DriverModule<?> driver, By by, Duration timeout, String cssName) { 
         String retVal = null; 
-        WebElement ele = FindMethods.findElement(driver, by, timeout);
+        WebElement ele = Finder.findElement(driver, by, timeout);
         try { 
             retVal = getCSSValue(ele, cssName);
             Clapper.log(LogLevel.INFO, "\nFetched Element Attribute(name:value) " + cssName+":"+retVal); 
@@ -60,7 +60,7 @@ public class GetMethods {
     }
     public static String getAttribute(DriverModule<?> driver, By by, Duration timeout, String attribute) { 
         String returnVal = null; 
-        WebElement ele = FindMethods.findElement(driver, by, timeout);
+        WebElement ele = Finder.findElement(driver, by, timeout);
         try { 
             returnVal = getAttribute(ele, attribute);
             Clapper.log(LogLevel.INFO, "\nRetrieved Element Attribute(name:value): " + attribute+":" + returnVal);

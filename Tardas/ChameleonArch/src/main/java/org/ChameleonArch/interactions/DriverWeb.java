@@ -4,9 +4,9 @@ import java.time.Duration;
 import java.util.List;
 import java.util.Set;
 
-import org.ChameleonArch.interactions.actions.FindMethods;
-import org.ChameleonArch.interactions.actions.GetMethods;
-import org.ChameleonArch.interactions.actions.InputMethods;
+import org.ChameleonArch.interactions.actions.Finder;
+import org.ChameleonArch.interactions.actions.Getter;
+import org.ChameleonArch.interactions.actions.Sender;
 import org.ChameleonArch.interactions.exceptions.ClickException;
 import org.CloisterBell.Clapper;
 import org.CloisterBell.enumTypes.LogLevel;
@@ -15,10 +15,10 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
+@SuppressWarnings("unchecked")
+public class DriverWeb<X extends WebElement> extends DriverModule<X> {
 
-public class DriverWeb<X extends WebDriver> extends DriverModule<X> {
-
-    public DriverWeb(X driver) {
+    public DriverWeb(WebDriver driver) {
         super(driver);
     }
     
@@ -35,7 +35,7 @@ public class DriverWeb<X extends WebDriver> extends DriverModule<X> {
         return (JavascriptExecutor) driver;
     }
     
-    public X getDriver() { 
+    public WebDriver getDriver() { 
         return driver;
     }
 
@@ -45,7 +45,7 @@ public class DriverWeb<X extends WebDriver> extends DriverModule<X> {
     }
 
     public List<WebElement> findElements(By by, Duration time) {
-        return FindMethods.findElements(this, by,time);
+        return Finder.findElements(this, by, time);
     }
 
     public WebElement findElement(By by) {
@@ -53,7 +53,7 @@ public class DriverWeb<X extends WebDriver> extends DriverModule<X> {
     }
 
     public WebElement findElement(By by, Duration timeout) {
-        return FindMethods.findElement(this, by, timeout);
+        return Finder.findElement(this, by, timeout);
     }
 
     public void click(By by) {
@@ -62,7 +62,7 @@ public class DriverWeb<X extends WebDriver> extends DriverModule<X> {
     }
 
     public void click(By by, Duration timeout) {
-        InputMethods.click(this, by, timeout);
+        Sender.click(this, by, timeout);
         
     }
 
@@ -72,7 +72,7 @@ public class DriverWeb<X extends WebDriver> extends DriverModule<X> {
     }
 
     public void sendKeys(By by, String keysToSend, Duration timeout) {
-        InputMethods.sendKeys(this, timeout, by, keysToSend);
+        Sender.sendKeys(this, timeout, by, keysToSend);
     }
 
     public String getText(By by) {
@@ -80,7 +80,7 @@ public class DriverWeb<X extends WebDriver> extends DriverModule<X> {
     }
 
     public String getText(By by, Duration timeout) {
-        return GetMethods.getText(this, by, timeout);
+        return Getter.getText(this, by, timeout);
     }
 
     public String getAttribute(By by, String att) {
@@ -88,7 +88,7 @@ public class DriverWeb<X extends WebDriver> extends DriverModule<X> {
     }
 
     public String getAttribute(By by, String att, Duration timeout) {
-        return GetMethods.getAttribute(this, by, timeout, att);
+        return Getter.getAttribute(this, by, timeout, att);
     }
 
     public String getCssValue(By by, String val) {
@@ -96,12 +96,12 @@ public class DriverWeb<X extends WebDriver> extends DriverModule<X> {
     }
 
     public String getCssValue(By by, String val, Duration timeout) {
-        return GetMethods.getCSSValue(this, by, timeout, val);
+        return Getter.getCSSValue(this, by, timeout, val);
     }
 
     public void click(WebElement ele) {
         try {
-            InputMethods.click(this, ele);
+            Sender.click(this, ele);
         } catch (ClickException e) {
            Clapper.log(LogLevel.DEBUG, e.getClickExceptionMessage()); 
         } 
@@ -167,6 +167,24 @@ public class DriverWeb<X extends WebDriver> extends DriverModule<X> {
     public Options manage() {
         // TODO Auto-generated method stub
         return driver.manage();
+    }
+
+
+    public String getText(X ele) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+
+    public String getAttribute(X ele, String att) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+
+    public String getCssValue(X ele, String val) {
+        // TODO Auto-generated method stub
+        return null;
     }
 
 }

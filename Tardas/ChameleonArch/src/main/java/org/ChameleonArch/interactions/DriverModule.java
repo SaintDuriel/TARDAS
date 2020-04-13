@@ -3,6 +3,7 @@ package org.ChameleonArch.interactions;
 import org.CloisterBell.Clapper;
 import org.CloisterBell.enumTypes.LogLevel;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 
 /**
  * DriverModule is an abstraction that layers on some logging for internal use <br>
@@ -11,11 +12,11 @@ import org.openqa.selenium.WebDriver;
  *
  * @param <X>
  */
-public abstract class DriverModule<X extends WebDriver> implements IDriverModule<X> {
+public abstract class DriverModule<X extends WebElement> implements IDriverModule<X> {
 
-    X driver; 
+    WebDriver driver; 
     protected long implicitWait = 15; 
-    public DriverModule(X driver) { 
+    public DriverModule(WebDriver driver) { 
         this.driver = driver; 
     }
     

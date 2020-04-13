@@ -2,6 +2,9 @@ package org.Pool;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import org.ChameleonArch.interactions.DriverModule;
 import org.CloisterBell.Clapper;
@@ -22,22 +25,20 @@ public class Skimmer {
 
     DriverModule<?>  driver; 
     Spin spin; 
-    static Class<?> annoTypeToInit; 
+ 
     public Skimmer(DriverModule<?> driver, Spin spin) { 
         this.driver = driver; 
         this.spin = spin;
     }
 
-    public static <T extends Page> T initLocators(DriverModule<?> driver, Spin spin,Class<T> page) { 
+    public static <T extends Page> T initLocators(DriverModule<?> driver, Spin spin, Class<T> page) { 
         T returnPage = null; 
-        setAnnotationTypeToInit(spin);
         try {
-            returnPage = findAnnotationType(page.getConstructor(DriverModule.class, Spin.class).newInstance(driver, spin));
+            returnPage = findAnnotationType(page.getConstructor(DriverModule.class, Spin.class).newInstance(driver, spin), spin);
         } catch (Exception e) { 
             Clapper.log(LogLevel.DEBUG, "Failed to initialize Page Object: " + page.getCanonicalName());
         }
         
-
         return returnPage; 
     }
 
@@ -48,16 +49,27 @@ public class Skimmer {
     }
 
     @SuppressWarnings("unchecked")
-    private static <T extends Page> T findAnnotationType(T page) { 
-        for(Field f : page.getClass().getFields()) { 
-            if(f.getAnnotation((Class<Annotation>)annoTypeToInit) != null) { 
-                setFieldValue(f.getAnnotation((Class<Annotation>)annoTypeToInit), f, page); 
+    private static <T extends Page> T findAnnotationType(T page, Spin spin) { 
+        Class<?> annotationToInit = setAnnotationTypeToInit(spin);
+        for(Field f : getFields(page)) { 
+            if(f.getAnnotation((Class<Annotation>)annotationToInit) != null) { 
+                setFieldValue(f.getAnnotation((Class<Annotation>)annotationToInit), f, page); 
             } else if (f.getAnnotation(WebBy.class) != null) { 
                 setFieldValue(f.getAnnotation(WebBy.class), f, page); 
             }
         }
 
         return page; 
+    }
+    
+    private static synchronized<T extends Page>  List<Field> getFields(T page) {
+        List<Field> fields = new ArrayList<Field>(); 
+        Field[] decFields = page.getClass().getDeclaredFields();
+        Field[] supFields = page.getClass().getFields();
+        
+        fields.addAll(Arrays.asList(decFields));
+        fields.addAll(Arrays.asList(supFields));
+        return fields;
     }
 
     String[] methodNames = {"id","css","xpath","tagName","className","linkText","partialLinkText","accessibilityId"};
@@ -237,8 +249,8 @@ public class Skimmer {
 
 
 
-    private static void setAnnotationTypeToInit(Spin spin) { 
-
+    private static Class<?> setAnnotationTypeToInit(Spin spin) { 
+        Class<?> annoTypeToInit; 
         switch(spin.hostPlatform()) {
         case OSX:
         case UNIX:
@@ -265,6 +277,7 @@ public class Skimmer {
 
         Clapper.log(LogLevel.DEBUG, "Setting Annotation Type to initialize to: " + annoTypeToInit.getSimpleName());
 
+        return annoTypeToInit; 
     }
 
 }
