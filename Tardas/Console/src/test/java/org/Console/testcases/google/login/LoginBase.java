@@ -8,7 +8,7 @@ public abstract class LoginBase extends LoginTemplate{
     protected String username; 
     protected String password; 
     private static final String defUsername ="matthew.jordan.johns@gmail.com"; 
-    private static final String defPassword = "LU58tt1124"; 
+    private static final String defPassword = ""; 
     public LoginBase() {     
     }
     
