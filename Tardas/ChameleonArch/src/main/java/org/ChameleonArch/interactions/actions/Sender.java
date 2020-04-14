@@ -15,7 +15,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-public class InputMethods {
+public class Sender {
 
 
     public synchronized static void sendKeys(DriverModule<?> driver, Duration timeout, By by, String keysToSend) {
@@ -35,7 +35,7 @@ public class InputMethods {
         }
         try { 
             ele.clear();
-            if(GetMethods.getAttribute(ele, "value").isEmpty()) {
+            if(Getter.getAttribute(ele, "value").isEmpty()) {
                 ele.sendKeys(keysToSend);
                 return;
             }
@@ -60,7 +60,7 @@ public class InputMethods {
             throw new Exception("Element is null");
         }
         try { 
-            if(GetMethods.getAttribute(ele, "value").isEmpty()) {
+            if(Getter.getAttribute(ele, "value").isEmpty()) {
                 return;
             }
             ele.clear();
@@ -70,7 +70,7 @@ public class InputMethods {
     }
     
     public synchronized static ClickSuccessType click(DriverModule<?> driver, By by, Duration timeout) { 
-        WebElement ele = FindMethods.findElementWithCondition(new WebDriverWait(driver.getDriver(), timeout),ExpectedConditions.elementToBeClickable(by)); 
+        WebElement ele = Finder.findElementWithCondition(new WebDriverWait(driver.getDriver(), timeout),ExpectedConditions.elementToBeClickable(by)); 
         Rectangle loc = new Rectangle(0, 0, 0, 0);
         ClickSuccessType successStrategy =  ClickSuccessType.WEBELEMENT;
         try { 
@@ -84,6 +84,8 @@ public class InputMethods {
         Clapper.log(LogLevel.INFO, "\nClicked element at: ("+loc.getX()+","+loc.getY()+") \nWith locator " + by + " \nWith Strategy: " + successStrategy);
         return successStrategy; 
     }
+    
+    
 
     public synchronized static ClickSuccessType click(DriverModule<?> driver, WebElement ele) throws ClickException { 
         try { 

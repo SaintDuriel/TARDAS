@@ -1,4 +1,4 @@
-package org.Console.testcases.google;
+package org.Console.testcases.google.search;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,12 +8,12 @@ import org.testng.annotations.Factory;
 
 public class SearchTestFactory {
 
-    @Factory//(dataProvider="searchData")
-    public  Object[] searchFactory() { 
+    @Factory
+    public  Object[] searchFactory(Object[] ss) { 
        String[] searchs = {"Hurray from a factory", "there's no way it worked", "Try again"}; 
        List<Object> thgs = new ArrayList<Object>(); 
-        for(String s : searchs )  {
-            thgs.add(new GoogleSearch(s)); 
+        for(Object s : searchs )  {
+            thgs.add(new GoogleSearch(s.toString())); 
         }
         
         System.out.println("Created "+  thgs.size() + " test instances?");
@@ -21,7 +21,7 @@ public class SearchTestFactory {
     }
     
     @DataProvider(name="searchData")
-    public String[] searchData() { 
+    public Object[] searchData() { 
         String[] searchs = {"Hurray from a factory", "there's no way it worked", "Try again"}; 
         
         return searchs; 

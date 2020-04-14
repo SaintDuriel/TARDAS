@@ -11,7 +11,7 @@ public class FindException extends Exception {
     private static final long serialVersionUID = 1002837382116057139L;
 
     public enum FindFailureType { 
-        WebDriver, FluentWaitCondition, ByIsNull, UNKNOWN
+        WebDriver, FluentWaitCondition, ByIsNull, ContextIsNull, UNKNOWN
     }
    private String message; 
     private FindFailureType failType; 

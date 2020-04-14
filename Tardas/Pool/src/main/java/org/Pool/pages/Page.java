@@ -14,10 +14,13 @@ public class Page {
         this.driver = driver;
         this.spin = spin; 
         pf = new Skimmer(driver, spin); 
-        initPage(this.getClass());
+        initPage(this);
     }
 
-    public <TPage extends Page> TPage initPage( Class<TPage> pageClass) {
+    public <TPage extends Page> TPage initPage(TPage pageClass) {
+        return pf.initLocators(pageClass);
+    }
+    public <TPage extends Page> TPage initPage(Class<TPage> pageClass) {
         return pf.initLocators(pageClass);
     }
     

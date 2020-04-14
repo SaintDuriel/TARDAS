@@ -2,6 +2,14 @@ package org.EyeOfHarmony.Seed;
 
 import java.util.Properties;
 
+/**
+ * Property Keys enum is a reference for the names of the configurable properties.<br>
+ * Has methods for fetching the variable value from the System, and coniguration files.<br>
+ * Needs to have XML values input in order to store a value for a run. However; given the nature of enums<br>
+ * it's not recommended to have the enum's storing the value.
+ * @author matth
+ *
+ */
 public enum PropertyKeys {
     TESTCONFIGFILE("testConfigFile"), 
     BROWSERCONFIGFILE("browserConfigFile"), 

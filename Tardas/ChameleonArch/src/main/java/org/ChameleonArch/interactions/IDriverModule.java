@@ -10,14 +10,19 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 
 
-@SuppressWarnings("unchecked")
-public interface IDriverModule<X extends WebDriver> extends WebDriver {
+
+public interface IDriverModule<X extends WebElement> extends WebDriver {
 
  
 	Actions getActions(); 
 	JavascriptExecutor getJSExecute(); 
-	X getDriver(); 
+	WebDriver getDriver(); 
 
+	/**
+	 * Method to fetch a given URL String
+	 * @author matth
+	 * @param url - String which should be a valid HTTP/S URL
+	 */
 	void get(String url); 
 	/**
 	 * Uses implicit wait to find elements matching input Locator. <br>
@@ -28,7 +33,7 @@ public interface IDriverModule<X extends WebDriver> extends WebDriver {
 	 * @param by - By locator to locate elements with
 	 * @return {@linkplain java.util.List}  <T extends WebElement> of Elements which could have zero elements
 	 */
-	List<WebElement> findElements(By by);
+	<Y extends WebElement> List<Y> findElements(By by);
 	/**
 	 * Search for element within specified time in seconds
 	 * @see #findElements(By) for reference of WebDriver method implementation. 
@@ -36,7 +41,7 @@ public interface IDriverModule<X extends WebDriver> extends WebDriver {
 	 * @param time - Time in seconds to search for element
 	 * @return {@linkplain java.util.List}  <T extends WebElement> of Elements which could have zero elements
 	 */
-	List<WebElement> findElements(By by, Duration time);
+	<Y extends WebElement> List<Y> findElements(By by, Duration time);
 	
 	/**
 	 * Use Implicit wait to find element matching input locator. <br>
@@ -47,7 +52,7 @@ public interface IDriverModule<X extends WebDriver> extends WebDriver {
 	 * @param by - By locator to find element
 	 * @return first located element or null
 	 */
-	WebElement findElement(By by);
+	<Y extends WebElement> Y findElement(By by);
 	/**
 	 * Search for element within specified time in seconds
 	 * @see #findElement(By) for reference of WebDriver method implementation
@@ -55,24 +60,27 @@ public interface IDriverModule<X extends WebDriver> extends WebDriver {
 	 * @param time - Time in seconds to search for element
 	 * @return first located element or null
 	 */
-	WebElement findElement(By by, Duration timeout);
+	<Y extends WebElement> Y findElement(By by, Duration timeout);
 	
 	void click(By by); 
 	void click(By by, Duration timeout); 
-	void click(WebElement ele); 
+	void click(X ele); 
 	void sendKeys(By by, String keysToSend); 
 	void sendKeys(By by, String keysToSend, Duration timeout); 
-	void sendKeys(WebElement ele); 
+	void sendKeys(X ele); 
+	
 	String getText(By by); 
 	String getText(By by, Duration timeout); 
+	String getText(X ele); 
 	
 	String getAttribute(By by, String att); 
 	String getAttribute(By by, String att,  Duration timeout); 
+	String getAttribute(X ele, String att); 
 	
 	
 	String getCssValue(By by, String val); 
 	String getCssValue(By by, String val, Duration timeout); 
-	
+	String getCssValue(X ele, String val); 
 	
 	
 	

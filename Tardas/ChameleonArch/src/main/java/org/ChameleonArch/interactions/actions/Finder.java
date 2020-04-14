@@ -16,50 +16,83 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-public class FindMethods<X extends WebElement> {
+public class Finder<X extends WebElement> {
 
     private synchronized static void throwException(Object ele, String message, FindFailureType failType) throws FindException { 
         if (ele == null) { 
             if(failType == null) { 
-                throw new FindException(message, FindFailureType.UNKNOWN, LogLevel.ERROR);
+                throwException(ele,message, FindFailureType.UNKNOWN);
             }
             switch (failType) {
             case ByIsNull:
                 throw new FindException(message, failType, LogLevel.CRITICAL);
             case FluentWaitCondition:
                 throw new FindException(message, failType, LogLevel.ERROR);
-            case UNKNOWN:
-                throw new FindException(message, failType, LogLevel.ERROR);
             case WebDriver:
                 throw new FindException(message, failType, LogLevel.WARN);
+            case UNKNOWN:
             default:
-                break; 
-            
+                throw new FindException(message, failType, LogLevel.ERROR);
             }
         }
     }
     
     private synchronized static void throwException(List<?> ele, String message, FindFailureType failType) throws FindException { 
         
-        if (ele.isEmpty()) { 
+        if ((null == ele) || ele.isEmpty()) { 
             if(failType == null) { 
-                throw new FindException(message, FindFailureType.UNKNOWN, LogLevel.ERROR);
+                throwException(ele, message, FindFailureType.UNKNOWN);
             }
             switch (failType) {
             case ByIsNull:
                 throw new FindException(message, failType, LogLevel.CRITICAL);
             case FluentWaitCondition:
                 throw new FindException(message, failType, LogLevel.ERROR);
-            case UNKNOWN:
-                throw new FindException(message, failType, LogLevel.ERROR);
+            
+             
             case WebDriver:
                 throw new FindException(message, failType, LogLevel.WARN);
+            case UNKNOWN:
             default:
-                break; 
+                throw new FindException(message, failType, LogLevel.ERROR);
             }
         }
     }
     
+    
+    public synchronized static WebElement findContextElement(DriverModule<?> driver, By ctx, By by, Duration timeout) { 
+       WebElement ele = null; 
+       try { 
+           throwException(by,"Context By variable is null", FindFailureType.ContextIsNull);
+           
+           ele = findContextElement(driver, findElement(driver, ctx, timeout), by, timeout);
+       } catch (FindException fe) { 
+              
+       }
+       
+       return ele; 
+        
+    }
+    
+    public synchronized static WebElement findContextElement(DriverModule<?> driver, WebElement ctx, By by, Duration timeout) { 
+        WebElement ele = null; 
+        try { 
+            throwException(ctx,"Context Element is null", FindFailureType.ContextIsNull);
+            throwException(by,"Target By variable is null", FindFailureType.ByIsNull);
+            ele = ctx.findElement(by);
+            throwException(ele, "Target Element varaible is null", FindFailureType.WebDriver);
+        } catch(FindException fe) { 
+            if(fe.getFailureType().equals(FindFailureType.ByIsNull)
+            || fe.getFailureType().equals(FindFailureType.ContextIsNull)) { 
+                return ele; 
+            }
+            ele = findElementWithCondition(new WebDriverWait(driver.getDriver(), timeout), ExpectedConditions.presenceOfNestedElementLocatedBy(ctx, by));
+        } catch (Exception e) { 
+            Clapper.log(LogLevel.ERROR, "Unable to locate element with locator: " + by);
+            Clapper.log(LogLevel.DEBUG, "Trace: " + e.getMessage());
+        }
+        return ele; 
+    }
     public synchronized static WebElement findElement(DriverModule<?> driver, By by, Duration timeout) { 
         WebElement ele = null; 
         
@@ -70,11 +103,10 @@ public class FindMethods<X extends WebElement> {
                     FindFailureType.WebDriver); 
             Clapper.log(LogLevel.INFO, "(WebDriver)Found "+ (null != ele ? ele.toString() : "null") + " with locator: " + by);
         } catch (FindException fe) { 
-            if(fe.getFailureType().equals(FindFailureType.ByIsNull)) { 
-                return ele; 
+            if(fe.getFailureType() != (FindFailureType.ByIsNull)) { 
+                ele = findElementWithCondition(new WebDriverWait(driver.getDriver(), timeout)
+                        , ExpectedConditions.presenceOfElementLocated(by)); 
             }
-            ele = findElementWithCondition(new WebDriverWait(driver.getDriver(), timeout)
-                    , ExpectedConditions.presenceOfElementLocated(by)); 
         } catch (Exception e) { 
             Clapper.log(LogLevel.ERROR, "Unable to locate element with locator: " + by);
             Clapper.log(LogLevel.DEBUG, "Trace: " + e.getMessage());

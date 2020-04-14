@@ -1,9 +1,11 @@
 package org.EyeOfHarmony.Seed;
+import static org.Library.Util.compare;
 
 import java.util.Properties;
 
 import org.CloisterBell.Clapper;
 import org.CloisterBell.enumTypes.LogLevel;
+
 
 /**
  * The spin in the Eye of Harmony essentially is the core of the EOH's configuration. 

@@ -2,6 +2,7 @@ package org.ChameleonArch.driverManagers;
 
 import org.ChameleonArch.DriverManager;
 import org.ChameleonArch.interactions.DriverWeb;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.edge.EdgeDriver;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
@@ -24,7 +25,7 @@ public class EdgeDriverManager extends DriverManager {
 
     @Override
     protected void createDriver() {
-        driver.set(new DriverWeb<EdgeDriver>(new EdgeDriver()));
+        driver.set(new DriverWeb<WebElement>(new EdgeDriver()));
         
     }
 
