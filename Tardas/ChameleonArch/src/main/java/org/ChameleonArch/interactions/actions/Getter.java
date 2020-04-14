@@ -15,7 +15,7 @@ public class Getter {
         String retVal = null; 
         WebElement ele = Finder.findElement(driver,by,timeout); 
         try { 
-            retVal = getText(ele); 
+            retVal = getText(ele, true); 
             Clapper.log(LogLevel.INFO, "Retrieved Element Text: "+ retVal);
         } catch (Exception e) { 
             Clapper.log(LogLevel.ERROR, "Failed to retrieve Element Text.");
@@ -24,7 +24,19 @@ public class Getter {
         return retVal;
     }
     
-    public static synchronized String getText(WebElement ele) throws Exception { 
+    public static synchronized String getText(WebElement ele) { 
+        String retVal = null; 
+        try { 
+            retVal = getText(ele, true); 
+            Clapper.log(LogLevel.INFO, "Retrieved Element Text: "+ retVal);
+        } catch (Exception e) { 
+            Clapper.log(LogLevel.ERROR, "Failed to retrieve Element Text.");
+            Clapper.log(LogLevel.DEBUG, "Trace\n" + e.getLocalizedMessage());
+        }
+        return retVal;
+    }
+    
+    private static synchronized String getText(WebElement ele, Boolean internal) throws Exception { 
         if(null == ele) { 
             throw new Exception("Element is null"); 
         }
@@ -58,11 +70,12 @@ public class Getter {
             throw e; 
         }
     }
+    
     public static String getAttribute(DriverModule<?> driver, By by, Duration timeout, String attribute) { 
         String returnVal = null; 
         WebElement ele = Finder.findElement(driver, by, timeout);
         try { 
-            returnVal = getAttribute(ele, attribute);
+            returnVal = getAttribute(ele, attribute, true);
             Clapper.log(LogLevel.INFO, "\nRetrieved Element Attribute(name:value): " + attribute+":" + returnVal);
         } catch (Exception e) { 
             Clapper.log(LogLevel.ERROR, "Failed to fetch attribute " + attribute);
@@ -71,13 +84,25 @@ public class Getter {
         
         return returnVal; 
     }
+    
+    public static synchronized String getAttribute(WebElement ele, String attribute) { 
+        String returnVal = null; 
+        try { 
+            returnVal = getAttribute(ele, attribute, true); 
+            Clapper.log(LogLevel.INFO,  "\nRetrieved Element Attribute(name:value) " + attribute + ":" + returnVal ); 
+        } catch (Exception e) { 
+            Clapper.log(LogLevel.ERROR, "Failed to fetch attribute " + attribute);
+            Clapper.log(LogLevel.DEBUG, "Trace\n" + e.getLocalizedMessage());
+        }
+        return returnVal; 
+    }
   
-    public static synchronized String getAttribute(WebElement ele, String name) throws Exception { 
+    private static synchronized String getAttribute(WebElement ele, String attribute, Boolean internal) throws Exception { 
         if(null == ele) { 
             throw new Exception("Element is null"); 
         }
         try { 
-            return ele.getAttribute(name);
+            return ele.getAttribute(attribute);
         } catch (Exception e) { 
             throw e; 
         }

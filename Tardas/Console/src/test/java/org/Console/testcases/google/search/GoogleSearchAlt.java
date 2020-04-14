@@ -1,9 +1,10 @@
-package org.Console.testcases.google;
+package org.Console.testcases.google.search;
 
 import java.util.List;
 
 import org.Pool.pages.Page;
-import org.Pool.pages.google.GoogleSearchHome;
+import org.Pool.pages.google.GoogleHomePage;
+import org.Pool.pages.google.GoogleSearchResults;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
@@ -34,15 +35,15 @@ public class GoogleSearchAlt extends Search {
     
     
     protected void focusSearchField() {
-        page.initPage(GoogleSearchHome.class).loadPage();
+        page.initPage(GoogleHomePage.class).loadPage();
     }
     
     protected void enterSearchQuery() {
-        page.initPage(GoogleSearchHome.class).enterSearchQuery(query);
+        page.initPage(GoogleHomePage.class).search(query);
     }
     
     protected  void checkSearchResults() {
-        List<WebElement> eles = page.initPage(GoogleSearchHome.class).clickSearch().getResultList();
+        List<WebElement> eles = page.initPage(GoogleSearchResults.class).getResultList();
         Assert.assertTrue(eles.size() > 0 , "Did not find any results");
     }
 }

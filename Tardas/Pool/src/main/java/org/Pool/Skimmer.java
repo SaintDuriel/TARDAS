@@ -16,6 +16,7 @@ import org.Pool.annotations.AndroidWeb;
 import org.Pool.annotations.IOSApp;
 import org.Pool.annotations.IOSWeb;
 import org.Pool.annotations.WebBy;
+import org.Pool.pages.BasePage;
 import org.Pool.pages.Page;
 import org.openqa.selenium.By;
 
@@ -31,6 +32,9 @@ public class Skimmer {
         this.spin = spin;
     }
 
+    public <T extends Page> T init(Class<T> page) { 
+        return initLocators(page); 
+    }
     public static <T extends Page> T initLocators(DriverModule<?> driver, Spin spin, Class<T> page) { 
         T returnPage = null; 
         try {
@@ -45,6 +49,17 @@ public class Skimmer {
     public <T extends Page> T initLocators( Class<T> page) { 
         T returnPage = Skimmer.initLocators(driver, spin, page); 
 
+        return returnPage; 
+    }
+    
+    public <T extends Page> T initLocators( T page) { 
+        T returnPage = null; 
+        try {
+            returnPage = findAnnotationType(page, spin);
+        } catch (Exception e) { 
+            Clapper.log(LogLevel.DEBUG, "Failed to initialize Page Object: " + page.getClass().getCanonicalName());
+        }
+        
         return returnPage; 
     }
 
@@ -64,12 +79,44 @@ public class Skimmer {
     
     private static synchronized<T extends Page>  List<Field> getFields(T page) {
         List<Field> fields = new ArrayList<Field>(); 
+        List<Field> supFields = new ArrayList<Field>(); 
+        for(Class<? extends Page> clz : getSuperClasses(page)) { 
+            supFields.addAll(Arrays.asList(clz.getFields()));
+            supFields.addAll(Arrays.asList(clz.getDeclaredFields()));
+        }
+        
         Field[] decFields = page.getClass().getDeclaredFields();
-        Field[] supFields = page.getClass().getFields();
+        Field[] clzFields = page.getClass().getFields();
         
         fields.addAll(Arrays.asList(decFields));
-        fields.addAll(Arrays.asList(supFields));
+        fields.addAll(Arrays.asList(clzFields));
         return fields;
+    }
+    
+    private static synchronized <T extends Page> List<Class<? extends Page>> getSuperClasses(T page) { 
+        List<Class<? extends Page>> returnVal = new ArrayList<Class<? extends Page>>(); 
+        Class<? extends Page> cur = getSuperClass(page.getClass());
+        if (cur == null) { 
+            return returnVal; 
+        }
+        
+        do 
+        { 
+            if(cur.getName().contains("Pool")) {
+                returnVal.add(cur); 
+            }
+            cur = getSuperClass(cur); 
+        } while(cur != null);
+        
+        return returnVal; 
+    }
+    
+    private static synchronized <T extends Page> Class<? extends Page> getSuperClass(Class<?> page) { 
+        try { 
+            return  page.getClass().getSuperclass().asSubclass(BasePage.class);
+        } catch (ClassCastException cce) { 
+            return null ;
+        } 
     }
 
     String[] methodNames = {"id","css","xpath","tagName","className","linkText","partialLinkText","accessibilityId"};

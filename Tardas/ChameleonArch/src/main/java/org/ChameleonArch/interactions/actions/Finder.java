@@ -59,6 +59,40 @@ public class Finder<X extends WebElement> {
         }
     }
     
+    
+    public synchronized static WebElement findContextElement(DriverModule<?> driver, By ctx, By by, Duration timeout) { 
+       WebElement ele = null; 
+       try { 
+           throwException(by,"Context By variable is null", FindFailureType.ContextIsNull);
+           
+           ele = findContextElement(driver, findElement(driver, ctx, timeout), by, timeout);
+       } catch (FindException fe) { 
+              
+       }
+       
+       return ele; 
+        
+    }
+    
+    public synchronized static WebElement findContextElement(DriverModule<?> driver, WebElement ctx, By by, Duration timeout) { 
+        WebElement ele = null; 
+        try { 
+            throwException(ctx,"Context Element is null", FindFailureType.ContextIsNull);
+            throwException(by,"Target By variable is null", FindFailureType.ByIsNull);
+            ele = ctx.findElement(by);
+            throwException(ele, "Target Element varaible is null", FindFailureType.WebDriver);
+        } catch(FindException fe) { 
+            if(fe.getFailureType().equals(FindFailureType.ByIsNull)
+            || fe.getFailureType().equals(FindFailureType.ContextIsNull)) { 
+                return ele; 
+            }
+            ele = findElementWithCondition(new WebDriverWait(driver.getDriver(), timeout), ExpectedConditions.presenceOfNestedElementLocatedBy(ctx, by));
+        } catch (Exception e) { 
+            Clapper.log(LogLevel.ERROR, "Unable to locate element with locator: " + by);
+            Clapper.log(LogLevel.DEBUG, "Trace: " + e.getMessage());
+        }
+        return ele; 
+    }
     public synchronized static WebElement findElement(DriverModule<?> driver, By by, Duration timeout) { 
         WebElement ele = null; 
         
@@ -69,11 +103,10 @@ public class Finder<X extends WebElement> {
                     FindFailureType.WebDriver); 
             Clapper.log(LogLevel.INFO, "(WebDriver)Found "+ (null != ele ? ele.toString() : "null") + " with locator: " + by);
         } catch (FindException fe) { 
-            if(fe.getFailureType().equals(FindFailureType.ByIsNull)) { 
-                return ele; 
+            if(fe.getFailureType() != (FindFailureType.ByIsNull)) { 
+                ele = findElementWithCondition(new WebDriverWait(driver.getDriver(), timeout)
+                        , ExpectedConditions.presenceOfElementLocated(by)); 
             }
-            ele = findElementWithCondition(new WebDriverWait(driver.getDriver(), timeout)
-                    , ExpectedConditions.presenceOfElementLocated(by)); 
         } catch (Exception e) { 
             Clapper.log(LogLevel.ERROR, "Unable to locate element with locator: " + by);
             Clapper.log(LogLevel.DEBUG, "Trace: " + e.getMessage());

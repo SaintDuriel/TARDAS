@@ -1,4 +1,4 @@
-package org.Console.testcases.google;
+package org.Console.testcases.google.search;
 
 import org.EyeOfHarmony.Supernova.Spark;
 import org.testng.annotations.Test;

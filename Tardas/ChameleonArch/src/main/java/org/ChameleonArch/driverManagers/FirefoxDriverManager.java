@@ -2,6 +2,7 @@ package org.ChameleonArch.driverManagers;
 
 import org.ChameleonArch.DriverManager;
 import org.ChameleonArch.interactions.DriverWeb;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
@@ -25,7 +26,7 @@ public class FirefoxDriverManager extends DriverManager {
     @Override
     protected void createDriver() {
         
-        driver.set(new DriverWeb<FirefoxDriver>(new FirefoxDriver()));
+        driver.set(new DriverWeb<WebElement>(new FirefoxDriver()));
        
     }
 

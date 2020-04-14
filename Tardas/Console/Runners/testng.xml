@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
-<suite name="Default Test">
+<suite name="Default Test" parallel="methods">
 
 <parameter name="testConfigFile" value="configurations\testconfig.properties"/>
 
@@ -11,7 +11,7 @@
   <test thread-count="5" name="Google Search">
   <parameter name="query" value="Query from Parameter"/>
     <classes>
-      <class name="org.Console.testcases.google.GoogleSearchAlt"/>
+      <class name="org.Console.testcases.google.search.SearchTestProvider"/>
     </classes>
   </test> <!-- Google Search -->
 </suite> <!-- Default Test -->

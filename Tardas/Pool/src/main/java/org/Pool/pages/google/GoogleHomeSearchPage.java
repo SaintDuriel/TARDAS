@@ -4,27 +4,21 @@ import org.ChameleonArch.interactions.DriverModule;
 import org.EyeOfHarmony.Seed.Spin;
 import org.Pool.annotations.IOSWeb;
 import org.Pool.annotations.WebBy;
-import org.Pool.pages.BasePage;
 import org.openqa.selenium.By;
 import org.testng.Assert;
 
-public class GoogleSearchHome extends BasePage {
+public class GoogleHomeSearchPage extends GoogleHomePage {
 
-    public GoogleSearchHome(DriverModule<?>  driver, Spin spin) {
+    
+    public GoogleHomeSearchPage(DriverModule<?> driver, Spin spin) {
         super(driver, spin);
+        // TODO Auto-generated constructor stub
     }
-    
 
-    public GoogleSearchHome loadPage() { 
-        System.out.println("Testing Environment: " + spin.environment().getDomain());
-        driver.get(spin.environment().getDomain());
-        return this;
-    }
-    
     @WebBy(css="input[name='q']")
     @IOSWeb(css="input[name='q'] mobile skimmer")
     public By searchField; 
-    public GoogleSearchHome enterSearchQuery(String query) { 
+    public GoogleHomeSearchPage enterSearchQuery(String query) { 
         Assert.assertTrue(sendKeys(searchField, query), "Failed to enter search query");
         return this;
     }
@@ -36,6 +30,5 @@ public class GoogleSearchHome extends BasePage {
         click(searchButton);
         return pf.initLocators(GoogleSearchResults.class);
     }
-    
-    
+
 }

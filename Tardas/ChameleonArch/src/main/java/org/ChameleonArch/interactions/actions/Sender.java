@@ -84,6 +84,8 @@ public class Sender {
         Clapper.log(LogLevel.INFO, "\nClicked element at: ("+loc.getX()+","+loc.getY()+") \nWith locator " + by + " \nWith Strategy: " + successStrategy);
         return successStrategy; 
     }
+    
+    
 
     public synchronized static ClickSuccessType click(DriverModule<?> driver, WebElement ele) throws ClickException { 
         try { 

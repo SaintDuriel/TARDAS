@@ -5,10 +5,10 @@ import java.util.List;
 
 import org.ChameleonArch.enums.ClickSuccessType;
 import org.ChameleonArch.interactions.DriverModule;
+import org.ChameleonArch.interactions.actions.ElementState;
 import org.ChameleonArch.interactions.actions.Finder;
 import org.ChameleonArch.interactions.actions.Getter;
 import org.ChameleonArch.interactions.actions.Sender;
-import org.ChameleonArch.interactions.actions.ElementState;
 import org.EyeOfHarmony.Seed.Spin;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -19,14 +19,6 @@ import org.openqa.selenium.WebElement;
  * This class should be the extension "base" of each page object, or <br>
  * within the inheritance hierarchy at some point. 
  *
- * @author matth
- *
- */
-/**
- * @author matth
- *
- */
-/**
  * @author matth
  *
  */
@@ -64,6 +56,14 @@ public abstract class BasePage extends Page {
      */
     protected final WebElement findElement(By by) { 
         return Finder.findElement(driver, by, Duration.ofSeconds(implicitWait)); 
+    }
+    
+    protected final WebElement findContextElement(By ctx, By by) { 
+        return Finder.findContextElement(driver, ctx, by, Duration.ofSeconds(implicitWait));
+    }
+    
+    protected final WebElement findContextElement(WebElement ctx, By by) { 
+        return Finder.findContextElement(driver, ctx, by, Duration.ofSeconds(implicitWait));
     }
     
     /**
